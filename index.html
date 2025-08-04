@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahnmanager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-file-invoice-dollar"></i> Mahnmanager</h1>
+        </header>
+
+
+        <section class="statistics-section" id="statisticsSection" style="display: none;">
+            <div class="statistics-container">
+                <h2><i class="fas fa-chart-bar"></i> Übersicht</h2>
+                <div class="statistics-grid">
+
+                    <div class="stat-card show-all-tenants">
+                        <div class="stat-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="allTenantsCount">383</div>
+                            <div class="stat-label">Alle Mieter</div>
+                        </div>
+                    </div>
+
+
+                     <div class="stat-card credit-tenants">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="creditTenantsCount">125</div>
+                            <div class="stat-label">Mieter mit Guthaben</div>
+                        </div>
+                    </div>
+
+  <!-- Neue stat-card für Guthaben nach "Mieter mit Guthaben" einfügen -->
+                    <div class="stat-card total-credit" style="color: rgb(40, 167, 69); font-weight: 700;">
+                        <div class="stat-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalCreditAmount">0,00&nbsp;€</div>
+                            <div class="stat-label">Guthaben<br><small style="font-size: 0.75em; color: #6c757d;">keine
+                                    Filter gesetzt</small></div>
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card open-tenants">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="openTenantsCount">256</div>
+                            <div class="stat-label">Mieter mit Schulden</div>
+                        </div>
+                    </div>
+
+                   
+
+                    <div class="stat-card total-amount" style="color: rgb(40, 167, 69); font-weight: 700;">
+                        <div class="stat-icon">
+                            <i class="fas fa-euro-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalDebtAmount">297.670,44&nbsp;€</div>
+                            <div class="stat-label">SCHULDEN</div>
+                        </div>
+                    </div>
+
+                  
+
+
+                    <div class="stat-card total-positions" style="display:none;">
+                        <div class="stat-icon">
+                            <i class="fas fa-list-ul"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalOpenPositions">1.371</div>
+                            <div class="stat-label">Offene Posten</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Portfolio-Verteilung -->
+                <!-- Erweiterte Portfolio-Sektion -->
+                <div class="statistics-details" id="statisticsDetails">
+                    <div class="detail-section">
+                        <!-- Klickbarer Header zum Togglen -->
+                        <div class="detail-header" id="portfolioToggleHeader">
+                            <h4>
+                                <i class="fas fa-chart-pie"></i>
+                                Verteilung nach Portfolios
+                                <span class="portfolio-summary" id="portfolioSummary">
+                                    (21 Portfolios • 292.952,83€)
+                                </span>
+                            </h4>
+                            <div class="toggle-controls">
+                                <span class="toggle-hint">Klicken zum Ein-/Ausblenden</span>
+                                <i class="fas fa-chevron-down toggle-icon" id="portfolioToggleIcon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Togglebarer Inhalt -->
+                        <div class="detail-content" id="portfolioDetailContent">
+                            <!-- Toggle zwischen Tabelle und Diagramm -->
+                            <div class="portfolio-view-controls">
+                                <button id="portfolioTableView" class="view-btn">
+                                    <i class="fas fa-list"></i> Tabelle
+                                </button>
+                                <button id="portfolioChartView" class="view-btn active">
+                                    <i class="fas fa-chart-pie"></i> Diagramm
+                                </button>
+                            </div>
+
+                            <!-- Tabellen-Ansicht - standardmäßig versteckt -->
+                            <div class="portfolio-breakdown" id="portfolioBreakdown" style="display: none;">
+                                <!-- Portfolio-Liste -->
+                            </div>
+
+                            <!-- Diagramm-Ansicht - standardmäßig sichtbar -->
+                            <div class="portfolio-chart-container" id="portfolioChartContainer" style="display: flex;">
+                                <canvas id="portfolioChart"></canvas>
+                                <div class="chart-legend" id="chartLegend"></div>
+                            </div>
+
+                            <!-- Tabellen-Ansicht -->
+                            <div class="portfolio-breakdown" id="portfolioBreakdown">
+                                <!-- Ihre bestehende Portfolio-Liste -->
+                            </div>
+
+                            <!-- Diagramm-Ansicht -->
+                            <div class="portfolio-chart-container" id="portfolioChartContainer" style="display: none;">
+                                <canvas id="portfolioChart"></canvas>
+                                <div class="chart-legend" id="chartLegend"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <main>
+            <section class="actions-section" id="actionsSection" style="display: none;">
+                <div class="action-buttons">
+                    <button id="generateSelectedButton" class="btn btn-primary">
+                        Ausgewählte Mahnungen erstellen
+                    </button>
+                    <button id="resetButton" class="btn btn-secondary">
+                        Neue Datei laden
+                    </button>
+                </div>
+            </section>
+
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-area" id="uploadArea">
+                    <h3>CSV-Datei hochladen</h3>
+                    <p>Datei hier hineinziehen oder klicken zum Auswählen</p>
+                    <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+                </div>
+                <div class="file-info" id="fileInfo" style="display: none;">
+                    <div class="info-row">
+                        <span class="label">Datei:</span>
+                        <span id="fileName" class="value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Datensätze:</span>
+                        <span id="recordCount" class="value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Mieter:</span>
+                        <span id="tenantCount" class="value"></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="data-overview" id="dataOverview" style="display: none;">
+                <div class="overview-header">
+                    <h3>Mieterübersicht</h3>
+                    <div class="overview-controls">
+                        <input id="searchInput" class="filter-input" type="text"
+                            placeholder="Name, Adresse, Portfolio eingeben... (z.B. 'Schneider Amalien')"
+                            autocomplete="off">
+                        <div class="bulk-actions">
+                            <button id="selectAllBtn" class="btn btn-small">Alle auswählen</button>
+                            <button id="deselectAllBtn" class="btn btn-small">Alle abwählen</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="tenantList" class="tenant-list"></div>
+            </section>
+
+            <section class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p id="progressText" class="progress-text">Verarbeitung läuft...</p>
+            </section>
+
+            <section class="summary-section" id="summarySection" style="display: none;">
+                <h3>Zusammenfassung</h3>
+                <div id="summaryContent" class="summary-grid"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="utils.js"></script>
+    <script src="csvParser.js"></script>
+    <script src="pdfUtils.js"></script>
+    <script src="pdf01anschrift.js"></script>
+    <script src="pdf02betreff.js"></script>
+    <script src="pdf03anredeundtext.js"></script>
+    <script src="pdf04tabelle.js"></script>
+    <script src="pdf05bankverbindung.js"></script>
+    <script src="pdf06schlusstext.js"></script>
+    <script src="pdf07footer.js"></script>
+    <script src="pdf00master.js"></script>
+    <script src="mahnstufen.js"></script>
+    <script src="tenantManager.js"></script>
+    <script src="uiRenderer.js"></script>
+    <script src="eventHandlers.js"></script>
+    <script src="textManager.js"></script>
+    <script src="mailsend.js"></script>
+    <script src="login.js"></script>
+    <script src="statisticManager.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

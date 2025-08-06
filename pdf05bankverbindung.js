@@ -171,7 +171,7 @@ class PDFBankverbindungModule {
                 const zweckLabelWidth = doc.getTextWidth('Zweck:') + 2;
                 const availableZweckWidth = columnWidth - zweckLabelWidth - 5;
                 const zweckText = this.fitTextToWidth(doc, verwendungszweck, availableZweckWidth, 9);
-                doc.text(zweckText, rightColumnX + zweckLabelWidth + 8, currentY);
+                doc.text(zweckText, rightColumnX + zweckLabelWidth + 9, currentY);
             }
 
             currentY += rowHeight + 1;

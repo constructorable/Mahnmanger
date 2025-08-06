@@ -35,7 +35,7 @@ class PDFSchlussModule {
                 doc.setFont('helvetica', 'normal');
                 doc.setTextColor(0, 0, 0);
                 yPosition = PDFUtils.addTextBlock(doc, schlusstext, margin, yPosition, maxWidth);
-                yPosition += 6;
+                yPosition += 2;
             }
 
             const userData = PDFUtils.getUserData();

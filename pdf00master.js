@@ -93,7 +93,7 @@ async buildPDFContent(doc, tenant, mahnstufe) {
 
         try {
             yPosition = await this.addMainLogo(doc, pageWidth);
-            yPosition += 3;
+            yPosition += 20;
             console.log('  Logo hinzugefügt, Y-Position:', yPosition);
         } catch (error) {
             console.warn('⚠️ Logo-Fehler:', error.message);
@@ -420,11 +420,11 @@ createExtendedFileName(tenant, mahnstufe = 1) {
                 canvas.width = width;
                 canvas.height = height;
                 ctx.imageSmoothingEnabled = true;
-                ctx.imageSmoothingQuality = 'medium';
+                ctx.imageSmoothingQuality = 'high';
                 ctx.drawImage(img, 0, 0, width, height);
 
                 resolve({
-                    dataURL: canvas.toDataURL('image/jpeg', 0.3),
+                    dataURL: canvas.toDataURL('image/jpeg', 1),
                     originalWidth: width,
                     originalHeight: height
                 });
